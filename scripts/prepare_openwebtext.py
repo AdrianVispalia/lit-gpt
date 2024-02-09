@@ -65,6 +65,9 @@ def prepare(
         arr = np.memmap(str(filename), dtype=dtype, mode="w+", shape=(arr_len,))
         total_batches = 1024
 
+        if arr_len % total_batches != 0:
+            raise ValueError(f"The array's length {arr_len} should be evenly divisible by the total number of batches {total_batches}")
+
         idx = 0
         for batch_idx in tqdm(range(total_batches), desc=f"writing {filename}"):
             # Batch together samples for faster write
